@@ -7,12 +7,15 @@
          private $nbpages;
          private $title;
 
+        // public static $livres; 
+
          public function __construct($id, $image, $title, $nbpages)
          {
              $this->id = $id;
              $this->image = $image;
              $this->title = $title;
              $this->nbpages = $nbpages;
+            // self::$livres[] = $this; $this pour ajouter le livre en cour de creation
          }
 
          public function getId(){return $this->id;}
