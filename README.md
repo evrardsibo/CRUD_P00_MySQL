@@ -12,7 +12,7 @@ Realization of a solo project CRUD MVC POO MSQL
 
 ## See the project
 
-You can view the web page via this url [Form_php](https://livresibo.000webhostapp.com/)
+You can view the web page via this url [CRUD-POO-MVC](https://livresibo.000webhostapp.com/)
 
 ## Library / Toolkit
 * Html
