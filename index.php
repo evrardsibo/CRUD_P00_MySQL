@@ -1,4 +1,6 @@
 <?php
+
+    session_start();
     define("URL", str_replace("index.php","",(isset($_SERVER['HTTPS']) ? "https" : "http").
     "://$_SERVER[HTTP_HOST]$_SERVER[PHP_SELF]"));
 
@@ -37,13 +39,22 @@
 
                     }elseif($url[1]==='m'){
 
-                        echo 'update';
+                        $livreController->modificationLivre($url[2]);
 
                     }elseif($url[1]==='s'){
 
-                        echo 'delete';
+                        $livreController->suppressionLivre($url[2]);
 
-                    }else {
+                    }elseif($url[1]==='av'){
+
+                        $livreController->ajoutLivreValidation();
+
+                    }elseif($url[1]==='mv'){
+
+                        $livreController->modificationlivreValidation();
+
+                    }
+                    else {
                         throw new Exception(' page 404');
                     }
                 break;
@@ -52,6 +63,7 @@
         }
        
     }catch(Exception $e){
-        echo $e->getMessage();
+        $msg = $e->getMessage();
+        require 'views/error.view.php';
     }
 

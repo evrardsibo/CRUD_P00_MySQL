@@ -46,5 +46,58 @@
                     return $this->livres[$i];
                 }
             }
+
+            throw new Exception('Petit Malin');
+        }
+
+        public function ajoutLivresBd($title,$nbpages,$image)
+        {
+            $req = "INSERT INTO livres (title,nbpages,image)
+                    VALUES(:title, :nbpages, :image)";
+            $stmt = $this->getBdd()->prepare($req);
+            $stmt->bindValue(':title',$title,PDO::PARAM_STR);
+            $stmt->bindValue(':nbpages',$nbpages,PDO::PARAM_INT);
+            $stmt->bindValue(':image',$image,PDO::PARAM_STR);
+            $result = $stmt->execute();
+            $stmt->closeCursor;
+
+             if($result>0)
+             {
+                 $livres = new Livre($this->getBdd()->lastInsertId(),$image,$title,$nbpages);
+                 $this->ajoutLivres($livres);
+             }
+
+        }
+
+        public function suppressionLivreBd($id)
+        {
+            $req = "DELETE FROM livres WHERE id = :idLivre";
+            $stmt = $this->getBdd()->prepare($req);
+            $stmt->bindValue(':idLivre',$id,PDO::PARAM_INT);
+            $result = $stmt->execute();
+            $stmt->closeCursor();
+
+            if (($result > 0 )) {
+               $livre = $this->getLivreById($id);
+               unset($livre);
+            }
+        }
+
+        public function modificationLivreBd($id,$title,$nbpages,$image)
+        {
+            $req = "UPDATE livres SET title = :title, nbpages = :nbpages, image = :image WHERE id = :id";
+            $stmt = $this->getBdd()->prepare($req);
+            $stmt->bindValue(':id',$id,PDO::PARAM_INT);
+            $stmt->bindValue(':title',$title,PDO::PARAM_STR);
+            $stmt->bindValue(':nbpages',$nbpages,PDO::PARAM_INT);
+            $stmt->bindValue(':image',$image,PDO::PARAM_STR);
+            $result = $stmt->execute();
+            $stmt->closeCursor;
+
+            if ($result >0) {
+                $this->getLivreById($id)->setTitle($title);
+                $this->getLivreById($id)->setTitle($nbpages);
+                $this->getLivreById($id)->setTitle($image);
+            }
         }
     }
